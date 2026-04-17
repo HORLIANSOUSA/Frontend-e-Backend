@@ -6,51 +6,37 @@ datasource db {
   provider = "postgresql"
 }
 
-model Plan {
-  id         Int      @id @default(autoincrement())
-  name       String
-  price      Decimal  @db.Decimal(10, 2)
-  maxLinks   Int      @map("max_links")
-  maxClicks  Int      @map("max_clicks")
-  users      User[]
-
-  @@map("plans")
-}
-
 model User {
-  id           BigInt      @id @default(autoincrement())
-  email        String      @unique
-  passwordHash String      @map("password_hash")
-  createdAt    DateTime    @default(now()) @map("created_at")
-  planId       Int?        @unique @map("plan_id")
-  plan         Plan?       @relation(fields: [planId], references: [id])
-  shortLinks   ShortLink[]
+  id           BigInt   @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
   reports      Report[]
 
   @@map("users")
 }
 
-model ShortLink {
-  id          BigInt       @id @default(autoincrement())
-  userId      BigInt       @map("user_id")
-  originalUrl String       @map("original_url")
-  shortCode   String       @unique @map("short_code")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  user        User         @relation(fields: [userId], references: [id])
-  clickTracks ClickTrack[]
+model Medicine {
+  id           BigInt           @id @default(autoincrement())
+  name         String
+  price        Decimal          @db.Decimal(10, 2)
+  code         String           @unique @map("codigo")
+  ondeTem      String?          @map("onde_tem")
+  riskLevel    Int              @map("nivel_risco")
+  searchTracks MedicineSearch[]
 
-  @@map("short_links")
+  @@map("medicines")
 }
 
-model ClickTrack {
-  id          BigInt    @id @default(autoincrement())
-  shortLinkId BigInt    @map("short_link_id")
-  clickedAt   DateTime  @default(now()) @map("clicked_at")
-  referrer    String?
-  userAgent   String?   @map("user_agent")
-  shortLink   ShortLink @relation(fields: [shortLinkId], references: [id])
+model MedicineSearch {
+  id         BigInt   @id @default(autoincrement())
+  medicineId BigInt   @map("medicine_id")
+  searchedAt DateTime @default(now()) @map("searched_at")
+  referrer   String?
+  userAgent  String?  @map("user_agent")
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
 
-  @@map("click_tracking")
+  @@map("medicine_searches")
 }
 
 model Report {

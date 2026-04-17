@@ -1,48 +1,33 @@
--- CreateTable
-CREATE TABLE "plans" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "price" DECIMAL(10,2) NOT NULL,
-    "max_links" INTEGER NOT NULL,
-    "max_clicks" INTEGER NOT NULL,
-
-    CONSTRAINT "plans_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "users" (
     "id" BIGSERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "plan_id" INTEGER,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "short_links" (
+CREATE TABLE "medicines" (
     "id" BIGSERIAL NOT NULL,
-    "user_id" BIGINT NOT NULL,
-    "original_url" TEXT NOT NULL,
-    "short_code" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT NOT NULL,
+    "price" DECIMAL(10,2) NOT NULL,
+    "codigo" TEXT NOT NULL,
+    "onde_tem" TEXT,
+    "nivel_risco" INTEGER NOT NULL,
 
-    CONSTRAINT "short_links_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "medicines_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "click_tracking" (
+CREATE TABLE "medicine_searches" (
     "id" BIGSERIAL NOT NULL,
-    "short_link_id" BIGINT NOT NULL,
-    "clicked_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "medicine_id" BIGINT NOT NULL,
+    "searched_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "referrer" TEXT,
     "user_agent" TEXT,
 
-    CONSTRAINT "click_tracking_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "medicine_searches_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
 CREATE TABLE "reports" (
     "id" BIGSERIAL NOT NULL,
     "user_id" BIGINT NOT NULL,
@@ -53,23 +38,13 @@ CREATE TABLE "reports" (
     CONSTRAINT "reports_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+CREATE UNIQUE INDEX "medicines_codigo_key" ON "medicines"("codigo");
 
--- CreateIndex
-CREATE UNIQUE INDEX "users_plan_id_key" ON "users"("plan_id");
+ALTER TABLE "medicine_searches" ADD CONSTRAINT "medicine_searches_medicine_id_fkey" 
+    FOREIGN KEY ("medicine_id") REFERENCES "medicines"("id") 
+    ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE UNIQUE INDEX "short_links_short_code_key" ON "short_links"("short_code");
-
--- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "plans"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "short_links" ADD CONSTRAINT "short_links_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "click_tracking" ADD CONSTRAINT "click_tracking_short_link_id_fkey" FOREIGN KEY ("short_link_id") REFERENCES "short_links"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "reports" ADD CONSTRAINT "reports_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "reports" ADD CONSTRAINT "reports_user_id_fkey" 
+    FOREIGN KEY ("user_id") REFERENCES "users"("id") 
+    ON DELETE RESTRICT ON UPDATE CASCADE;
