@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           BigInt     @id @default(autoincrement())
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  avatar       String?
+  name         String
+  favorites    Favorite[]
+  reports      Report[]
+
+  @@map("users")
+}
+
+model Medicine {
+  id           BigInt           @id @default(autoincrement())
+  name         String
+  price        Decimal          @db.Decimal(10, 2)
+  code         String           @unique @map("codigo")
+  ondeTem      String?          @map("onde_tem")
+  riskLevel    Int              @map("nivel_risco")
+  favoritedBy  Favorite[]
+  searchTracks MedicineSearch[]
+
+  @@map("medicines")
+}
+
+model Favorite {
+  id         BigInt   @id @default(autoincrement())
+  userId     BigInt   @map("user_id")
+  medicineId BigInt   @map("medicine_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, medicineId])
+  @@map("favorites")
+}
+
+model MedicineSearch {
+  id         BigInt   @id @default(autoincrement())
+  medicineId BigInt   @map("medicine_id")
+  searchedAt DateTime @default(now()) @map("searched_at")
+  referrer   String?
+  userAgent  String?  @map("user_agent")
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+
+  @@map("medicine_searches")
+}
+
+model Report {
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt   @map("user_id")
+  reportType  String   @map("report_type")
+  generatedAt DateTime @default(now()) @map("generated_at")
+  data        Json?
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("reports")
+}
