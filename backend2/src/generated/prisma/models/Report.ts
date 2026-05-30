@@ -28,24 +28,22 @@ export type AggregateReport = {
 
 export type ReportAvgAggregateOutputType = {
   id: number | null
-  userId: number | null
 }
 
 export type ReportSumAggregateOutputType = {
   id: bigint | null
-  userId: bigint | null
 }
 
 export type ReportMinAggregateOutputType = {
   id: bigint | null
-  userId: bigint | null
+  userId: string | null
   reportType: string | null
   generatedAt: Date | null
 }
 
 export type ReportMaxAggregateOutputType = {
   id: bigint | null
-  userId: bigint | null
+  userId: string | null
   reportType: string | null
   generatedAt: Date | null
 }
@@ -62,12 +60,10 @@ export type ReportCountAggregateOutputType = {
 
 export type ReportAvgAggregateInputType = {
   id?: true
-  userId?: true
 }
 
 export type ReportSumAggregateInputType = {
   id?: true
-  userId?: true
 }
 
 export type ReportMinAggregateInputType = {
@@ -181,7 +177,7 @@ export type ReportGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type ReportGroupByOutputType = {
   id: bigint
-  userId: bigint
+  userId: string
   reportType: string
   generatedAt: Date
   data: runtime.JsonValue | null
@@ -212,7 +208,7 @@ export type ReportWhereInput = {
   OR?: Prisma.ReportWhereInput[]
   NOT?: Prisma.ReportWhereInput | Prisma.ReportWhereInput[]
   id?: Prisma.BigIntFilter<"Report"> | bigint | number
-  userId?: Prisma.BigIntFilter<"Report"> | bigint | number
+  userId?: Prisma.StringFilter<"Report"> | string
   reportType?: Prisma.StringFilter<"Report"> | string
   generatedAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   data?: Prisma.JsonNullableFilter<"Report">
@@ -233,7 +229,7 @@ export type ReportWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ReportWhereInput | Prisma.ReportWhereInput[]
   OR?: Prisma.ReportWhereInput[]
   NOT?: Prisma.ReportWhereInput | Prisma.ReportWhereInput[]
-  userId?: Prisma.BigIntFilter<"Report"> | bigint | number
+  userId?: Prisma.StringFilter<"Report"> | string
   reportType?: Prisma.StringFilter<"Report"> | string
   generatedAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   data?: Prisma.JsonNullableFilter<"Report">
@@ -258,7 +254,7 @@ export type ReportScalarWhereWithAggregatesInput = {
   OR?: Prisma.ReportScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ReportScalarWhereWithAggregatesInput | Prisma.ReportScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"Report"> | bigint | number
-  userId?: Prisma.BigIntWithAggregatesFilter<"Report"> | bigint | number
+  userId?: Prisma.StringWithAggregatesFilter<"Report"> | string
   reportType?: Prisma.StringWithAggregatesFilter<"Report"> | string
   generatedAt?: Prisma.DateTimeWithAggregatesFilter<"Report"> | Date | string
   data?: Prisma.JsonNullableWithAggregatesFilter<"Report">
@@ -274,7 +270,7 @@ export type ReportCreateInput = {
 
 export type ReportUncheckedCreateInput = {
   id?: bigint | number
-  userId: bigint | number
+  userId: string
   reportType: string
   generatedAt?: Date | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -290,7 +286,7 @@ export type ReportUpdateInput = {
 
 export type ReportUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   reportType?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -298,7 +294,7 @@ export type ReportUncheckedUpdateInput = {
 
 export type ReportCreateManyInput = {
   id?: bigint | number
-  userId: bigint | number
+  userId: string
   reportType: string
   generatedAt?: Date | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -313,7 +309,7 @@ export type ReportUpdateManyMutationInput = {
 
 export type ReportUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   reportType?: Prisma.StringFieldUpdateOperationsInput | string
   generatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -339,7 +335,6 @@ export type ReportCountOrderByAggregateInput = {
 
 export type ReportAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
 }
 
 export type ReportMaxOrderByAggregateInput = {
@@ -358,7 +353,6 @@ export type ReportMinOrderByAggregateInput = {
 
 export type ReportSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
 }
 
 export type ReportCreateNestedManyWithoutUserInput = {
@@ -448,7 +442,7 @@ export type ReportScalarWhereInput = {
   OR?: Prisma.ReportScalarWhereInput[]
   NOT?: Prisma.ReportScalarWhereInput | Prisma.ReportScalarWhereInput[]
   id?: Prisma.BigIntFilter<"Report"> | bigint | number
-  userId?: Prisma.BigIntFilter<"Report"> | bigint | number
+  userId?: Prisma.StringFilter<"Report"> | string
   reportType?: Prisma.StringFilter<"Report"> | string
   generatedAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   data?: Prisma.JsonNullableFilter<"Report">
@@ -537,7 +531,7 @@ export type $ReportPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
-    userId: bigint
+    userId: string
     reportType: string
     generatedAt: Date
     data: runtime.JsonValue | null
@@ -966,7 +960,7 @@ export interface Prisma__ReportClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface ReportFieldRefs {
   readonly id: Prisma.FieldRef<"Report", 'BigInt'>
-  readonly userId: Prisma.FieldRef<"Report", 'BigInt'>
+  readonly userId: Prisma.FieldRef<"Report", 'String'>
   readonly reportType: Prisma.FieldRef<"Report", 'String'>
   readonly generatedAt: Prisma.FieldRef<"Report", 'DateTime'>
   readonly data: Prisma.FieldRef<"Report", 'Json'>

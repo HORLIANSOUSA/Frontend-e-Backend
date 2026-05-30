@@ -232,6 +232,7 @@ export type MedicineWhereInput = {
   code?: Prisma.StringFilter<"Medicine"> | string
   ondeTem?: Prisma.StringNullableFilter<"Medicine"> | string | null
   riskLevel?: Prisma.IntFilter<"Medicine"> | number
+  favoritedBy?: Prisma.FavoriteListRelationFilter
   searchTracks?: Prisma.MedicineSearchListRelationFilter
 }
 
@@ -242,6 +243,7 @@ export type MedicineOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   ondeTem?: Prisma.SortOrderInput | Prisma.SortOrder
   riskLevel?: Prisma.SortOrder
+  favoritedBy?: Prisma.FavoriteOrderByRelationAggregateInput
   searchTracks?: Prisma.MedicineSearchOrderByRelationAggregateInput
 }
 
@@ -255,6 +257,7 @@ export type MedicineWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.DecimalFilter<"Medicine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   ondeTem?: Prisma.StringNullableFilter<"Medicine"> | string | null
   riskLevel?: Prisma.IntFilter<"Medicine"> | number
+  favoritedBy?: Prisma.FavoriteListRelationFilter
   searchTracks?: Prisma.MedicineSearchListRelationFilter
 }, "id" | "code">
 
@@ -291,6 +294,7 @@ export type MedicineCreateInput = {
   code: string
   ondeTem?: string | null
   riskLevel: number
+  favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutMedicineInput
   searchTracks?: Prisma.MedicineSearchCreateNestedManyWithoutMedicineInput
 }
 
@@ -301,6 +305,7 @@ export type MedicineUncheckedCreateInput = {
   code: string
   ondeTem?: string | null
   riskLevel: number
+  favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMedicineInput
   searchTracks?: Prisma.MedicineSearchUncheckedCreateNestedManyWithoutMedicineInput
 }
 
@@ -311,6 +316,7 @@ export type MedicineUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  favoritedBy?: Prisma.FavoriteUpdateManyWithoutMedicineNestedInput
   searchTracks?: Prisma.MedicineSearchUpdateManyWithoutMedicineNestedInput
 }
 
@@ -321,6 +327,7 @@ export type MedicineUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutMedicineNestedInput
   searchTracks?: Prisma.MedicineSearchUncheckedUpdateManyWithoutMedicineNestedInput
 }
 
@@ -395,6 +402,14 @@ export type MedicineScalarRelationFilter = {
   isNot?: Prisma.MedicineWhereInput
 }
 
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -403,16 +418,26 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type MedicineCreateNestedOneWithoutFavoritedByInput = {
+  create?: Prisma.XOR<Prisma.MedicineCreateWithoutFavoritedByInput, Prisma.MedicineUncheckedCreateWithoutFavoritedByInput>
+  connectOrCreate?: Prisma.MedicineCreateOrConnectWithoutFavoritedByInput
+  connect?: Prisma.MedicineWhereUniqueInput
+}
+
+export type MedicineUpdateOneRequiredWithoutFavoritedByNestedInput = {
+  create?: Prisma.XOR<Prisma.MedicineCreateWithoutFavoritedByInput, Prisma.MedicineUncheckedCreateWithoutFavoritedByInput>
+  connectOrCreate?: Prisma.MedicineCreateOrConnectWithoutFavoritedByInput
+  upsert?: Prisma.MedicineUpsertWithoutFavoritedByInput
+  connect?: Prisma.MedicineWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MedicineUpdateToOneWithWhereWithoutFavoritedByInput, Prisma.MedicineUpdateWithoutFavoritedByInput>, Prisma.MedicineUncheckedUpdateWithoutFavoritedByInput>
 }
 
 export type MedicineCreateNestedOneWithoutSearchTracksInput = {
@@ -429,6 +454,62 @@ export type MedicineUpdateOneRequiredWithoutSearchTracksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MedicineUpdateToOneWithWhereWithoutSearchTracksInput, Prisma.MedicineUpdateWithoutSearchTracksInput>, Prisma.MedicineUncheckedUpdateWithoutSearchTracksInput>
 }
 
+export type MedicineCreateWithoutFavoritedByInput = {
+  id?: bigint | number
+  name: string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  code: string
+  ondeTem?: string | null
+  riskLevel: number
+  searchTracks?: Prisma.MedicineSearchCreateNestedManyWithoutMedicineInput
+}
+
+export type MedicineUncheckedCreateWithoutFavoritedByInput = {
+  id?: bigint | number
+  name: string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  code: string
+  ondeTem?: string | null
+  riskLevel: number
+  searchTracks?: Prisma.MedicineSearchUncheckedCreateNestedManyWithoutMedicineInput
+}
+
+export type MedicineCreateOrConnectWithoutFavoritedByInput = {
+  where: Prisma.MedicineWhereUniqueInput
+  create: Prisma.XOR<Prisma.MedicineCreateWithoutFavoritedByInput, Prisma.MedicineUncheckedCreateWithoutFavoritedByInput>
+}
+
+export type MedicineUpsertWithoutFavoritedByInput = {
+  update: Prisma.XOR<Prisma.MedicineUpdateWithoutFavoritedByInput, Prisma.MedicineUncheckedUpdateWithoutFavoritedByInput>
+  create: Prisma.XOR<Prisma.MedicineCreateWithoutFavoritedByInput, Prisma.MedicineUncheckedCreateWithoutFavoritedByInput>
+  where?: Prisma.MedicineWhereInput
+}
+
+export type MedicineUpdateToOneWithWhereWithoutFavoritedByInput = {
+  where?: Prisma.MedicineWhereInput
+  data: Prisma.XOR<Prisma.MedicineUpdateWithoutFavoritedByInput, Prisma.MedicineUncheckedUpdateWithoutFavoritedByInput>
+}
+
+export type MedicineUpdateWithoutFavoritedByInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  searchTracks?: Prisma.MedicineSearchUpdateManyWithoutMedicineNestedInput
+}
+
+export type MedicineUncheckedUpdateWithoutFavoritedByInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  searchTracks?: Prisma.MedicineSearchUncheckedUpdateManyWithoutMedicineNestedInput
+}
+
 export type MedicineCreateWithoutSearchTracksInput = {
   id?: bigint | number
   name: string
@@ -436,6 +517,7 @@ export type MedicineCreateWithoutSearchTracksInput = {
   code: string
   ondeTem?: string | null
   riskLevel: number
+  favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutMedicineInput
 }
 
 export type MedicineUncheckedCreateWithoutSearchTracksInput = {
@@ -445,6 +527,7 @@ export type MedicineUncheckedCreateWithoutSearchTracksInput = {
   code: string
   ondeTem?: string | null
   riskLevel: number
+  favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutMedicineInput
 }
 
 export type MedicineCreateOrConnectWithoutSearchTracksInput = {
@@ -470,6 +553,7 @@ export type MedicineUpdateWithoutSearchTracksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  favoritedBy?: Prisma.FavoriteUpdateManyWithoutMedicineNestedInput
 }
 
 export type MedicineUncheckedUpdateWithoutSearchTracksInput = {
@@ -479,6 +563,7 @@ export type MedicineUncheckedUpdateWithoutSearchTracksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ondeTem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   riskLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutMedicineNestedInput
 }
 
 
@@ -487,10 +572,12 @@ export type MedicineUncheckedUpdateWithoutSearchTracksInput = {
  */
 
 export type MedicineCountOutputType = {
+  favoritedBy: number
   searchTracks: number
 }
 
 export type MedicineCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  favoritedBy?: boolean | MedicineCountOutputTypeCountFavoritedByArgs
   searchTracks?: boolean | MedicineCountOutputTypeCountSearchTracksArgs
 }
 
@@ -502,6 +589,13 @@ export type MedicineCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the MedicineCountOutputType
    */
   select?: Prisma.MedicineCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MedicineCountOutputType without action
+ */
+export type MedicineCountOutputTypeCountFavoritedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteWhereInput
 }
 
 /**
@@ -519,6 +613,7 @@ export type MedicineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   code?: boolean
   ondeTem?: boolean
   riskLevel?: boolean
+  favoritedBy?: boolean | Prisma.Medicine$favoritedByArgs<ExtArgs>
   searchTracks?: boolean | Prisma.Medicine$searchTracksArgs<ExtArgs>
   _count?: boolean | Prisma.MedicineCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["medicine"]>
@@ -552,6 +647,7 @@ export type MedicineSelectScalar = {
 
 export type MedicineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "code" | "ondeTem" | "riskLevel", ExtArgs["result"]["medicine"]>
 export type MedicineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  favoritedBy?: boolean | Prisma.Medicine$favoritedByArgs<ExtArgs>
   searchTracks?: boolean | Prisma.Medicine$searchTracksArgs<ExtArgs>
   _count?: boolean | Prisma.MedicineCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -561,6 +657,7 @@ export type MedicineIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $MedicinePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Medicine"
   objects: {
+    favoritedBy: Prisma.$FavoritePayload<ExtArgs>[]
     searchTracks: Prisma.$MedicineSearchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -964,6 +1061,7 @@ readonly fields: MedicineFieldRefs;
  */
 export interface Prisma__MedicineClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  favoritedBy<T extends Prisma.Medicine$favoritedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Medicine$favoritedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   searchTracks<T extends Prisma.Medicine$searchTracksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Medicine$searchTracksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MedicineSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1390,6 +1488,30 @@ export type MedicineDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Medicines to delete.
    */
   limit?: number
+}
+
+/**
+ * Medicine.favoritedBy
+ */
+export type Medicine$favoritedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Favorite
+   */
+  select?: Prisma.FavoriteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Favorite
+   */
+  omit?: Prisma.FavoriteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteInclude<ExtArgs> | null
+  where?: Prisma.FavoriteWhereInput
+  orderBy?: Prisma.FavoriteOrderByWithRelationInput | Prisma.FavoriteOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteScalarFieldEnum | Prisma.FavoriteScalarFieldEnum[]
 }
 
 /**
