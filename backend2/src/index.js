@@ -1,111 +1,117 @@
-import express from "express"
-import dotenv from "dotenv"
-import operations from "./services/operations.js"
-import { auth } from "./lib/auth.js"
-import { toNodeHandler } from "better-auth/node"
+import express from "express";
+import dotenv from "dotenv";
+import operations from "./services/operations.js";
+import { auth } from "./lib/auth.js";
+import { toNodeHandler } from "better-auth/node";
+import { requireAuth } from "./middlewares/requireAuth.js";
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const PORT = process.env.PORT || 5500
+const app = express();
+const PORT = process.env.PORT || 5500;
 
-app.all("/api/auth/*splat", toNodeHandler(auth))
+app.use(express.json());
 
-app.use(express.json())
+// Rotas do Better Auth (login, cadastro, sessão)
+app.use("/api/auth", toNodeHandler(auth));
+
+// Tudo abaixo exige autenticação
+app.use(requireAuth);
 
 // Health check
 app.get("/health", (req, res) => {
   res.json({
     status: "OK",
-    timestamp: new Date().toISOString()
-  })
-})
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Home
 app.get("/", (req, res) => {
   res.json({
     message: "MedKit rodando por um fio",
-    version: "1.0.0"
-  })
-})
+    version: "1.0.0",
+  });
+});
 
 // Criar remédio
 app.post("/remedios", async (req, res) => {
   try {
-    const data = req.body
-
-    const result = await operations.criarRemedio(data)
-
-    res.status(201).json(result)
+    const result = await operations.criarRemedio(req.body);
+    res.status(201).json(result);
   } catch (error) {
     res.status(500).json({
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
 
 // Listar remédios
 app.get("/remedios", async (req, res) => {
   try {
-    const result = await operations.listarRemedios()
-
-    res.json(result)
+    const result = await operations.listarRemedios();
+    res.json(result);
   } catch (error) {
     res.status(500).json({
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
 
 // Buscar remédios
 app.get("/remedios/buscar/:termo", async (req, res) => {
   try {
-    const { termo } = req.params
-
-    const result = await operations.procurarRemedios(termo)
-
-    res.json(result)
+    const { termo } = req.params;
+    const result = await operations.procurarRemedios(termo);
+    res.json(result);
   } catch (error) {
     res.status(500).json({
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
 
 // Buscar por código
 app.get("/remedios/:codigo", async (req, res) => {
   try {
-    const { codigo } = req.params
+    const { codigo } = req.params;
 
-    const result = await operations.buscarRemedioPorCodigo(codigo)
+    const result = await operations.buscarRemedioPorCodigo(codigo);
 
     if (!result) {
       return res.status(404).json({
-        error: "Remedio nao encontrado"
-      })
+        error: "Remédio não encontrado",
+      });
     }
 
-    res.json(result)
+    res.json(result);
   } catch (error) {
     res.status(500).json({
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
 
 // Mais procurados
 app.get("/mais-procurados", async (req, res) => {
   try {
-    const result = await operations.maisProcurados(10)
-
-    res.json(result)
+    const result = await operations.maisProcurados(10);
+    res.json(result);
   } catch (error) {
     res.status(500).json({
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
+
+// Perfil do usuário autenticado
+app.get("/api/me", (req, res) => {
+  res.json({
+    message: "Bem-vindo ao seu perfil!",
+    user: req.user,
+  });
+});
 
 app.listen(PORT, () => {
-  console.log(`Servidor MedKit em http://localhost:${PORT}`)
-})
+  console.log(`Servidor MedKit em http://localhost:${PORT}`);
+});

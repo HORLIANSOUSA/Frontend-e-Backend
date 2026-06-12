@@ -1,4 +1,18 @@
 $kind: http-request
-url: ""
-method: GET
+name: New Request
+url: http://localhost:5500/api/auth/sign-up/email
+method: POST
+headers:
+  Origin: http://localhost:5500
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Teste\",\r
+
+    \  \"email\": \"teste@email.com\",\r
+
+    \  \"password\": \"12345678\"\r
+
+    }"
 order: 1779644262813
