@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { auth } from "./lib/auth.js";
 import { toNodeHandler } from "better-auth/node";
 import { requireAuth } from "./middlewares/requireAuth.js";
-
+import cors from "cors";
 import medicineRoutes from "./routes/medicine.routes.js";
 import favoriteRoutes from "./routes/favorite.routes.js";
 import reportRoutes from "./routes/report.routes.js";
@@ -12,6 +12,11 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5500;
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 
 app.use("/api/auth", toNodeHandler(auth));
 

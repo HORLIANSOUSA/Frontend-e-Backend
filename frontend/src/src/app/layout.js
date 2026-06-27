@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { TopbarMenu } from "@/components/ui/topbar-menu";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -24,7 +23,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-br" className={`font-sans ${inter.variable}`} suppressHydrationWarning>
+    <html lang="pt-br" className={`font-sans ${inter.variable}`}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

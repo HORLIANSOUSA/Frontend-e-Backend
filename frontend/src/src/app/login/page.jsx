@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card"
-import Link from "next/link"
 
 export default function Login() {
   return (
@@ -22,7 +21,6 @@ export default function Login() {
         <button className="bg-black text-white px-4 py-2 rounded w-full">
           Entrar
         </button>
-         <h2 className="text-1xl  text-center">Não tem conta <Link href="/cadastro"> cadastre-se </Link></h2>
       </Card>
     </main>
   )
