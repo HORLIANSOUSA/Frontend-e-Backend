@@ -11,16 +11,24 @@ export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Verifica a sessão perguntando ao backend
-  const sessionResponse = await fetch(
-    "http://localhost:5500/api/auth/get-session",
-    {
-      headers: {
-        cookie: request.headers.get("cookie") ?? "",
-      },
-    },
-  );
+  let session = null;
 
-  const session = await sessionResponse.json();
+  try {
+    const sessionResponse = await fetch(
+      "http://127.0.0.1:5500/api/auth/get-session",
+      {
+        headers: {
+          cookie: request.headers.get("cookie") ?? "",
+        },
+      },
+    );
+
+    if (sessionResponse.ok) {
+      session = await sessionResponse.json();
+    }
+  } catch (error) {
+    console.error("Falha ao verificar sessao:", error);
+  }
   const estaLogado = !!session?.user;
 
   // Se não está logado e tenta acessar rota privada → manda pro login
