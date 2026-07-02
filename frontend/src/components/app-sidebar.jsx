@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Camera,
   ChartBar,
@@ -33,9 +34,9 @@ import { NavUser } from "./nav-user";
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "MedKit",
+    email: "usuario@medkit.local",
+    avatar: "/download.png",
   },
   navMain: [
     {
@@ -158,10 +159,10 @@ export function AppSidebar({ ...props }) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="#">
+              <Link href="/">
                 <Layers className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+                <span className="text-base font-semibold">MedKit</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

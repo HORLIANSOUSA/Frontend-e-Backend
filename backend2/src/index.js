@@ -7,6 +7,7 @@ import cors from "cors";
 import medicineRoutes from "./routes/medicine.routes.js";
 import favoriteRoutes from "./routes/favorite.routes.js";
 import reportRoutes from "./routes/report.routes.js";
+import planRoutes from "./routes/plan.routes.js";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/medicines", medicineRoutes);
+app.use("/api/plans", planRoutes);
 
 app.use("/favorites", requireAuth, favoriteRoutes);
 app.use("/reports", requireAuth, reportRoutes);

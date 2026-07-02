@@ -1,43 +1,46 @@
 // src/lib/auth.js
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { memoryAdapter } from "@better-auth/memory-adapter";
+import { authSecret, hasDatabaseUrl } from "./env.js";
 import { prisma } from "./prisma.js";
 
-export const auth = betterAuth({
+const memoryDb = {
+  user: [],
+  session: [],
+  account: [],
+  verification: [],
+};
+
+const authConfig = {
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5500",
-  trustedOrigins: [
-    process.env.FRONTEND_URL || "http://localhost:3000",
-  ],
+  trustedOrigins: [process.env.FRONTEND_URL || "http://localhost:3000"],
 
-  // Adapter para o banco de dados
-  database: prismaAdapter(prisma, {
-    provider: "postgresql", // ou "mysql", "sqlite", etc.
-  }),
-
-  // Configurações de email (opcional)
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
   },
 
-  // Configurações de segurança
-  secret: process.env.BETTER_AUTH_SECRET,
+  secret: authSecret,
 
-  // Configurações de sessão
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 dias
-    updateAge: 60 * 60 * 24, // 1 dia
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // 5 minutos
+      maxAge: 5 * 60,
     },
   },
 
-  // Provedores OAuth (opcional)
-  socialProviders: {
-    // github: {
-    //   clientId: process.env.GITHUB_CLIENT_ID,
-    //   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    // },
-  },
-});
+  socialProviders: {},
+};
+
+if (hasDatabaseUrl) {
+  authConfig.database = prismaAdapter(prisma, {
+    provider: "postgresql",
+  });
+} else {
+  authConfig.database = memoryAdapter(memoryDb);
+}
+
+export const auth = betterAuth(authConfig);
