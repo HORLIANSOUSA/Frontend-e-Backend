@@ -47,7 +47,13 @@ export function mostSearched() {
 
 export function create(data) {
   return prisma.medicine.create({
-    data,
+    data: {
+      name: data.name,
+      price: Number(data.price),
+      code: data.code,
+      ondeTem: data.ondeTem || null,
+      riskLevel: Number(data.riskLevel),
+    },
   });
 }
 

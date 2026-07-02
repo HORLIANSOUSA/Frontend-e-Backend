@@ -35,24 +35,20 @@ export default function RegisterForm() {
 
     setLoading(true);
 
-    try {
-      const { error } = await authClient.signUp.email({
-        name,
-        email,
-        password,
-      });
+    const {data, error } = await authClient.signUp.email({
+      name,
+      email,
+      password,
+    });
 
-      if (error) {
-        setError("Erro ao criar conta. Verifique os dados e tente novamente.");
-        return;
-      }
+    setLoading(false);
 
-      router.push("/dashboard");
-    } catch (error) {
-      setError("Não foi possível conectar ao servidor. Tente novamente.");
-    } finally {
-      setLoading(false);
+    if (error) {
+      setError("Erro ao criar conta. Verifique os dados e tente novamente.");
+      return;
     }
+
+    router.push("/dashboard");
   }
 
   return (

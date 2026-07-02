@@ -74,7 +74,10 @@ export async function create(req, res) {
       req.body
     );
 
-    res.status(201).json(medicine);
+    res.status(201).json({
+      ...medicine,
+      id: medicine.id.toString(),
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
