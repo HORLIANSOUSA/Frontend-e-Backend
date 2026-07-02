@@ -79,7 +79,7 @@ export default function MedicineForm() {
       }
 
       setForm(initialForm);
-      setMessage("Medicamento cadastrado com sucesso.");
+      setMessage("Medicamento cadastrado com sucesso. Ele ja aparece em Planos.");
     } catch {
       setError("Nao foi possivel conectar ao servidor.");
     } finally {

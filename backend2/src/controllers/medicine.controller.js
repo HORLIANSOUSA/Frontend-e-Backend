@@ -1,111 +1,114 @@
 import * as medicineModel from "../models/medicine.model.js";
 
+function toJsonSafe(value) {
+  return JSON.parse(
+    JSON.stringify(value, (_, currentValue) => {
+      if (typeof currentValue === "bigint") {
+        return currentValue.toString();
+      }
+
+      return currentValue;
+    })
+  );
+}
+
+function sendError(res, error) {
+  const isMissingDatabase = error.message.includes("DATABASE_URL");
+
+  res.status(isMissingDatabase ? 503 : 500).json({
+    error: error.message,
+  });
+}
+
 export async function getAll(req, res) {
   try {
     const medicines = await medicineModel.getAll();
-    res.json(medicines);
+    res.json(toJsonSafe(medicines));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function getById(req, res) {
   try {
-    const medicine = await medicineModel.getById(
-      BigInt(req.params.id)
-    );
+    const medicine = await medicineModel.getById(BigInt(req.params.id));
 
     if (!medicine) {
       return res.status(404).json({
-        error: "Remédio não encontrado",
+        error: "Remedio nao encontrado",
       });
     }
 
-    res.json(medicine);
+    res.json(toJsonSafe(medicine));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function getByCode(req, res) {
   try {
-    const medicine = await medicineModel.getByCode(
-      req.params.codigo
-    );
+    const medicine = await medicineModel.getByCode(req.params.codigo);
 
     if (!medicine) {
       return res.status(404).json({
-        error: "Remédio não encontrado",
+        error: "Remedio nao encontrado",
       });
     }
 
-    res.json(medicine);
+    res.json(toJsonSafe(medicine));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function search(req, res) {
   try {
-    const medicines = await medicineModel.search(
-      req.params.termo
-    );
+    const medicines = await medicineModel.search(req.params.termo);
 
-    res.json(medicines);
+    res.json(toJsonSafe(medicines));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function mostSearched(req, res) {
   try {
-    const medicines =
-      await medicineModel.mostSearched();
+    const medicines = await medicineModel.mostSearched();
 
-    res.json(medicines);
+    res.json(toJsonSafe(medicines));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function create(req, res) {
   try {
-    const medicine = await medicineModel.create(
-      req.body
-    );
+    const medicine = await medicineModel.create(req.body);
 
-    res.status(201).json({
-      ...medicine,
-      id: medicine.id.toString(),
-    });
+    res.status(201).json(toJsonSafe(medicine));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function update(req, res) {
   try {
-    const medicine = await medicineModel.update(
-      BigInt(req.params.id),
-      req.body
-    );
+    const medicine = await medicineModel.update(BigInt(req.params.id), req.body);
 
-    res.json(medicine);
+    res.json(toJsonSafe(medicine));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
 
 export async function remove(req, res) {
   try {
-    await medicineModel.remove(
-      BigInt(req.params.id)
-    );
+    await medicineModel.remove(BigInt(req.params.id));
 
     res.json({
-      message: "Remédio removido com sucesso",
+      message: "Remedio removido com sucesso",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendError(res, error);
   }
 }
